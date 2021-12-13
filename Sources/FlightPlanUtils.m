@@ -9,6 +9,7 @@
 #import "NSString+Additions.h"
 
 CLLocation *_homeBaseLocation = nil;
+NSString *_allWaypointsFilename = @"0 ALL WAYPOINTS.fpl";
 
 @implementation FlightPlanUtils
 
@@ -80,7 +81,7 @@ CLLocation *_homeBaseLocation = nil;
   flightPlan.created = [NSDate date];
   flightPlan.routeName = @"ALL WAYPOINTS";
   flightPlan.waypoints = allUserWaypoints;
-  filePath = [folderPath stringByAppendingPathComponent:@"0 ALL WAYPOINTS.fpl"];
+  filePath = [folderPath stringByAppendingPathComponent:_allWaypointsFilename];
   flightPlanDictionary[filePath] = flightPlan;
   
   NSMutableArray *routePoints = [NSMutableArray new];
@@ -124,6 +125,8 @@ CLLocation *_homeBaseLocation = nil;
   FlightPlan *flightPlan = [FlightPlan new];
 
   if ([filePath hasSuffix:@".fpl"] == NO) return nil;
+  if ([filePath.lastPathComponent isEqualToString:_allWaypointsFilename]) return nil;
+  
   NSString *strings = [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:&error];
   if (error) {
     strings = [NSString stringWithContentsOfFile:filePath encoding:NSUnicodeStringEncoding error:&error];
