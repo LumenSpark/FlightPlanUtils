@@ -42,6 +42,7 @@
 		B0053F782765573300A43C3B /* NSString+Additions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSString+Additions.m"; sourceTree = "<group>"; };
 		B08D64C12761A7BB00141988 /* fpl_utils */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = fpl_utils; sourceTree = BUILT_PRODUCTS_DIR; };
 		B08D64C42761A7BB00141988 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		B0AF4F892766E21D0059143B /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -74,6 +75,7 @@
 		B08D64C32761A7BB00141988 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				B0AF4F892766E21D0059143B /* README.md */,
 				B0053F7327654A2A00A43C3B /* FlightPlan.h */,
 				B0053F7427654A2A00A43C3B /* FlightPlan.m */,
 				B0053F68276541ED00A43C3B /* FlightPlanUtils.h */,

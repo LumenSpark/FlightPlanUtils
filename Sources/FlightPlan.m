@@ -61,13 +61,9 @@
     if (routePoint.waypointCountryCode.isPresent) {
       [result appendFormat:@"      <waypoint-country-code>%@</waypoint-country-code>\n", routePoint.waypointCountryCode];
     }
-    else if ([routePoint.waypointType isEqualToString:@"USER WAYPOINT"]) {
+    else {
       [result appendFormat:@"      <waypoint-country-code />\n"];
     }
-    else {
-      [result appendFormat:@"      <waypoint-country-code>K1</waypoint-country-code>\n"];
-    }
-    
     [result appendFormat:@"    </route-point>\n"];
   }
   

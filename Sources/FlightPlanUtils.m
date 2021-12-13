@@ -78,9 +78,9 @@ CLLocation *_homeBaseLocation = nil;
   //
   FlightPlan *flightPlan = [FlightPlan new];
   flightPlan.created = [NSDate date];
-  flightPlan.routeName = @"All User Waypoints";
+  flightPlan.routeName = @"ALL WAYPOINTS";
   flightPlan.waypoints = allUserWaypoints;
-  filePath = [folderPath stringByAppendingPathComponent:@"0 ALL USER WAYPOINTS.fpl"];
+  filePath = [folderPath stringByAppendingPathComponent:@"0 ALL WAYPOINTS.fpl"];
   flightPlanDictionary[filePath] = flightPlan;
   
   NSMutableArray *routePoints = [NSMutableArray new];
@@ -92,19 +92,26 @@ CLLocation *_homeBaseLocation = nil;
   }
   flightPlan.routePoints = routePoints;
   
+  NSMutableArray *filePaths = [flightPlanDictionary.allKeys mutableCopy];
+  [filePaths sortUsingComparator:^NSComparisonResult(NSString *obj1, NSString *obj2) {
+    return [obj1 compare:obj2];
+  }];
+  
   // Write updated flight plans to disk
   //
-  for (NSString *filePath in flightPlanDictionary.allKeys) {
+  for (NSString *filePath in filePaths) {
     FlightPlan *flightPlan = flightPlanDictionary[filePath];
     [flightPlan.description writeToFile:filePath atomically:YES encoding:NSUTF8StringEncoding error:&error];
     if (error) {
       Log(@"Error saving %@ : %@", filePath.lastPathComponent, error.description);
     }
     else {
-      Log(@"%@", flightPlan.routeName);
+      Log(@"✓ %@", flightPlan.routeName);
     }
     error = nil;
   }
+  
+  Log(@"");
 }
 
 
@@ -151,6 +158,12 @@ CLLocation *_homeBaseLocation = nil;
     }
     if ([line containsEndTag:tag]) {
       if (waypoint) {
+        if (waypoint.countryCode.isPresent == NO) {
+          waypoint.countryCode = @"K1";
+        }
+        if ([waypoint.type isEqualToString:@"USER WAYPOINT"]) {
+          waypoint.countryCode = @"";
+        }
         [waypoints addObject:waypoint];
       }
       continue;
@@ -218,6 +231,12 @@ CLLocation *_homeBaseLocation = nil;
     }
     if ([line containsEndTag:tag]) {
       if (routePoint) {
+        if (routePoint.waypointCountryCode.isPresent == NO) {
+          routePoint.waypointCountryCode = @"K1";
+        }
+        if ([routePoint.waypointType isEqualToString:@"USER WAYPOINT"]) {
+          routePoint.waypointCountryCode = @"";
+        }
         [routePoints addObject:routePoint];
       }
       continue;
