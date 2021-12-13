@@ -193,10 +193,12 @@ CLLocation *_homeBaseLocation = nil;
     NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
     [numberFormatter setFormat:@"0.000000"];
     
+    // Note: Round lat/lon values as per below to prevent duplicate waypoints when creating flight plans in ForeFlight
+    //
     tag = @"lat";
     if ([line containsStartTag:tag]) {
       valueString = [line valueWithinTag:tag];
-      NSNumber *value = [numberFormatter numberFromString:valueString];
+      NSNumber *value = [NSNumber numberWithDouble:(double)((int)(valueString.doubleValue * 100000)) / 100000.0];
       if (value) {
         waypoint.lat = [numberFormatter stringFromNumber:value];
       }
@@ -205,7 +207,7 @@ CLLocation *_homeBaseLocation = nil;
     tag = @"lon";
     if ([line containsStartTag:tag]) {
       valueString = [line valueWithinTag:tag];
-      NSNumber *value = [numberFormatter numberFromString:valueString];
+      NSNumber *value = [NSNumber numberWithDouble:(double)((int)(valueString.doubleValue * 100000)) / 100000.0];
       if (value) {
         waypoint.lon = [numberFormatter stringFromNumber:value];
       }
