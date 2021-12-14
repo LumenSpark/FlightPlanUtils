@@ -9,7 +9,7 @@
 #import "NSString+Additions.h"
 
 CLLocation *_homeBaseLocation = nil;
-NSString *_allWaypointsFilename = @"0 ALL WAYPOINTS.fpl";
+NSString *_allWaypointsFilename = @"Waypoints.fpl";
 
 @implementation FlightPlanUtils
 
@@ -22,13 +22,13 @@ NSString *_allWaypointsFilename = @"0 ALL WAYPOINTS.fpl";
   NSString *filePath = nil;
   NSMutableArray *flightPlans = [NSMutableArray new];
   folderPath = [folderPath stringByExpandingTildeInPath];
-  NSArray *contents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:folderPath error:&error];
+  NSArray *contents = [[NSFileManager defaultManager] subpathsOfDirectoryAtPath:folderPath error:&error];
   NSMutableDictionary *flightPlanDictionary = [NSMutableDictionary new];
   
   // Read all the flight plans
   //
-  for (NSString *fileName in contents) {
-    filePath = [folderPath stringByAppendingPathComponent:fileName];
+  for (NSString *subpath in contents) {
+    filePath = [folderPath stringByAppendingPathComponent:subpath];
     FlightPlan *flightPlan = [FlightPlanUtils readFlightPlan:filePath];
     if (flightPlan) {
       [flightPlans addObject:flightPlan];
@@ -95,7 +95,7 @@ NSString *_allWaypointsFilename = @"0 ALL WAYPOINTS.fpl";
   
   NSMutableArray *filePaths = [flightPlanDictionary.allKeys mutableCopy];
   [filePaths sortUsingComparator:^NSComparisonResult(NSString *obj1, NSString *obj2) {
-    return [obj1 compare:obj2];
+    return [obj1.lastPathComponent compare:obj2.lastPathComponent];
   }];
   
   // Write updated flight plans to disk
