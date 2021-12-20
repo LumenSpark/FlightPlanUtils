@@ -196,12 +196,10 @@ NSString *_allWaypointsFilename = @"Waypoints.fpl";
     NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
     [numberFormatter setFormat:@"0.000000"];
     
-    // Note: Round lat/lon values as per below to prevent duplicate waypoints when creating flight plans in ForeFlight
-    //
     tag = @"lat";
     if ([line containsStartTag:tag]) {
       valueString = [line valueWithinTag:tag];
-      NSNumber *value = [NSNumber numberWithDouble:(double)((int)(valueString.doubleValue * 100000)) / 100000.0];
+      NSNumber *value = [NSNumber numberWithDouble:valueString.doubleValue];
       if (value) {
         waypoint.lat = [numberFormatter stringFromNumber:value];
       }
@@ -210,7 +208,7 @@ NSString *_allWaypointsFilename = @"Waypoints.fpl";
     tag = @"lon";
     if ([line containsStartTag:tag]) {
       valueString = [line valueWithinTag:tag];
-      NSNumber *value = [NSNumber numberWithDouble:(double)((int)(valueString.doubleValue * 100000)) / 100000.0];
+      NSNumber *value = [NSNumber numberWithDouble:valueString.doubleValue];
       if (value) {
         waypoint.lon = [numberFormatter stringFromNumber:value];
       }
@@ -225,7 +223,7 @@ NSString *_allWaypointsFilename = @"Waypoints.fpl";
     tag = @"route-name";
     if ([line containsStartTag:tag]) {
       NSString *filename = filePath.stringByDeletingPathExtension.lastPathComponent.uppercaseString;
-      flightPlan.routeName = filename; // [line valueWithinTag:tag];
+      flightPlan.routeName = filename;
       continue;;
     }
     

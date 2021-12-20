@@ -35,7 +35,23 @@
 - (BOOL)isEqual:(id)object
 {
   Waypoint *other = object;
-  return [self.lat isEqualToString:other.lat] && [self.lon isEqualToString:other.lon];
+    
+  NSNumberFormatter *formatter = [NSNumberFormatter new];
+  [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
+  
+  CLLocationCoordinate2D coordinate1;
+  coordinate1.latitude = [formatter numberFromString:self.lat].doubleValue;
+  coordinate1.longitude = [formatter numberFromString:self.lon].doubleValue;
+
+  CLLocationCoordinate2D coordinate2;
+  coordinate2.latitude = [formatter numberFromString:other.lat].doubleValue;
+  coordinate2.longitude = [formatter numberFromString:other.lon].doubleValue;
+
+  CLLocation *location1 = [[CLLocation alloc] initWithLatitude:coordinate1.latitude longitude:coordinate1.longitude];
+  CLLocation *location2 = [[CLLocation alloc] initWithLatitude:coordinate2.latitude longitude:coordinate2.longitude];
+
+  CLLocationDistance distanceInMeters = [location1 distanceFromLocation:location2];
+  return (distanceInMeters < 60); // 200 feet
 }
 
 
